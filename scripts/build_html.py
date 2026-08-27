@@ -738,6 +738,8 @@ rule_rows = "".join(
     for r in rules)
 
 brand_a = bcount["A"]
+multi_n = sum(1 for i in items if len([p for p in plats_of(i) if "無法" not in p]) > 1)
+unk_n, unk_c = UNK["items"], UNK["C"]
 
 NOTICE = ("""<div class="notice"><b>此版本預設隱藏「平台推論」相關內容。</b>
   平台是由認證附件的儀器序號反推得出，屬本表推論、非食藥署官方標示，也未經原廠或各實驗室確認。
@@ -850,10 +852,10 @@ HTML = f"""<!doctype html>
   </div>
   <div class="bars" id="platBars"></div>
   <p class="lede" style="margin-top:14px;font-size:13px">
-  <b>兩個必須知道的限制。</b>其一，同一個認證項目若同時用到多個平台，會在多列各出現一次（共 24 項如此），
-  因此 n 值與家數縱向加總都會大於實際總數（198 項、32 家）。橫列可讀，縱欄不可加總。
+  <b>兩個必須知道的限制。</b>其一，同一個認證項目若同時用到多個平台，會在多列各出現一次（共 {multi_n} 項如此），
+  因此 n 值與家數縱向加總都會大於實際總數（{len(items)} 項、32 家）。橫列可讀，縱欄不可加總。
   其二，最後一列「無法由序號判定」不是平台，只表示儀器序號不符合任何已知編碼慣例，
-  故不繪製橫條、不列入長度比較；該群共 78 項，其中 63 項同時也是泛稱描述——多為單基因 qPCR 或 Sanger 檢測，
+  故不繪製橫條、不列入長度比較；該群共 {unk_n} 項，其中 {unk_c} 項同時也是泛稱描述——多為單基因 qPCR 或 Sanger 檢測，
   既無平台辨識度也無品牌辨識度。</p>
 </section>
 
